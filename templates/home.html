@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="jumbotron jumbotron">
+    <div class="container">
+      <h1 class="display-4">All posts</h1>
+      <p class="lead">find all content that you need.</p>
+    </div>
+    <form class="login col-md-4" method="POST" style="margin-left: 29rem;">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Title</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" name="title">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Content</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="content"></textarea>
+      </div>
+      <br>
+        {% if request.user.is_authenticated %}
+        <button type="submit" class="btn btn-primary" style="margin-left: 13rem;">Submit</button>
+        {% else %}
+        <button type="submit" class="btn btn-primary" disabled style="margin-left: 12rem;">Please Login</button>
+        {% endif %}
+      <br>
+    </form>    
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for post in post %}
+            <div class="col">
+              <div class="card text-white bg-secondary mb-3 h-100">
+                <div class="card-header">Post by : {{post.user}}</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{post.title}}</h5>
+                  <p class="card-text">{{post.content|truncatechars:30 }}.</p>
+                  <a href="{{post.slug}}" class="btn btn-success" style="margin-left: 0rem;">Read more</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-white">Last updated {{post.created}}</small>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<br>
+{% endblock %}
+    
